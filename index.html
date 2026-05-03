@@ -8,7 +8,7 @@
             text-align: center;
             font-family: Arial, sans-serif;
 
-            /* ✨ خلفية ناعمة ومحسنة */
+            /* ✨ خلفية هادية ومضمونة */
             background: linear-gradient(135deg, #fafafa, #ffffff);
 
             background-image:
@@ -19,7 +19,7 @@
             color: #333;
         }
 
-        /* ✨ Title */
+        /* ✨ العنوان */
         .title {
             font-size: 42px;
             color: #555;
@@ -49,43 +49,7 @@
             }
         }
 
-        /* Start Screen */
-        #startScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        #startScreen h2 {
-            color: gray;
-            margin-bottom: 20px;
-        }
-
-        #startScreen button {
-            padding: 12px 25px;
-            font-size: 18px;
-            background: #777;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        #startScreen button:hover {
-            background: #555;
-            transform: scale(1.05);
-        }
-
-        /* Box design */
+        /* ✨ البوكسات */
         .box {
             margin: 25px auto;
             padding: 25px;
@@ -94,15 +58,9 @@
             border-radius: 16px;
             border: 1px solid rgba(0,0,0,0.06);
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-
-            transition: transform 0.3s ease;
         }
 
-        .box:hover {
-            transform: translateY(-3px);
-        }
-
-        /* Inputs */
+        /* ✨ textarea */
         textarea {
             width: 260px;
             height: 110px;
@@ -113,6 +71,7 @@
             outline: none;
         }
 
+        /* ✨ buttons */
         button {
             padding: 10px 22px;
             font-size: 15px;
@@ -129,13 +88,14 @@
             transform: scale(1.05);
         }
 
+        /* ✨ message */
         #message {
             font-size: 18px;
             color: #333;
-            transition: opacity 0.8s ease;
+            transition: 0.5s;
         }
 
-        /* Slideshow */
+        /* ✨ slideshow */
         .slideshow {
             width: 320px;
             height: 320px;
@@ -152,141 +112,4 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            transition: opacity 1.2s ease;
-        }
-
-        /* Overlay */
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        #overlay img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-        }
-    </style>
-</head>
-
-<body>
-
-<!-- 🎵 موسيقى -->
-<iframe
-    id="music"
-    width="0"
-    height="0"
-    src="https://www.youtube.com/embed/PX2d9J5b8dc?enablejsapi=1&loop=1&playlist=PX2d9J5b8dc"
-    frameborder="0"
-    allow="autoplay">
-</iframe>
-
-<!-- Start Screen -->
-<div id="startScreen">
-    <h2>Welcome to Memories 🤍</h2>
-    <button onclick="startSite()">Start Memories</button>
-</div>
-
-<h1 class="title">MEMORIES 🤍</h1>
-
-<!-- مسدج -->
-<div class="box">
-    <textarea placeholder="اكتبي مسدج هنا 💌"></textarea>
-</div>
-
-<!-- جمل -->
-<div class="box">
-    <button onclick="showMessage()">Next Memory</button>
-    <p id="message"></p>
-</div>
-
-<!-- صور -->
-<div class="box">
-    <h3>Memories Photos 📸</h3>
-
-    <div class="slideshow">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https://via.placeholder.com/300">
-    </div>
-</div>
-
-<!-- تكبير صورة -->
-<div id="overlay" onclick="closeImage()">
-    <img id="bigImg">
-</div>
-
-<script>
-    // Start
-    function startSite() {
-        document.getElementById("startScreen").style.display = "none";
-    }
-
-    // Music fix (تشغيل بعد أول click)
-    window.addEventListener("click", function () {
-        let frame = document.getElementById("music");
-        frame.src = frame.src;
-    });
-
-    // Messages
-    let messages = [
-        "اكتبي الجملة 1 هنا",
-        "اكتبي الجملة 2 هنا",
-        "اكتبي الجملة 3 هنا",
-        "اكتبي الجملة 4 هنا",
-        "اكتبي الجملة 5 هنا",
-        "اكتبي الجملة 6 هنا",
-        "اكتبي الجملة 7 هنا",
-        "اكتبي الجملة 8 هنا",
-        "اكتبي الجملة 9 هنا",
-        "اكتبي الجملة 10 هنا"
-    ];
-
-    function showMessage() {
-        let random = Math.floor(Math.random() * messages.length);
-
-        let msg = document.getElementById("message");
-        msg.style.opacity = 0;
-
-        setTimeout(() => {
-            msg.innerText = messages[random];
-            msg.style.opacity = 1;
-        }, 300);
-    }
-
-    // Slideshow
-    let index = 0;
-    let slides = document.getElementsByClassName("slide");
-
-    function showSlides() {
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.opacity = 0;
-        }
-
-        index++;
-        if (index > slides.length) index = 1;
-
-        slides[index - 1].style.opacity = 1;
-
-        setTimeout(showSlides, 2000);
-    }
-
-    showSlides();
-</script>
-
-</body>
-</html>
+            transition
