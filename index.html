@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memories</title>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: gray;
+            font-size: 40px;
+            margin-top: 30px;
+        }
+
+        .box {
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            border: 1px solid #ccc;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: gray;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>MEMORIES 🩶</h1>
+
+    <div class="box">
+        <p>هنا هتكتبي المسدج بعدين 💌</p>
+    </div>
+
+    <div class="box">
+        <button onclick="showMessage()">Click here</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        let messages = [
+            "اكتبي الجملة 1 هنا",
+            "اكتبي الجملة 2 هنا",
+            "اكتبي الجملة 3 هنا",
+            "اكتبي الجملة 4 هنا",
+            "اكتبي الجملة 5 هنا",
+            "اكتبي الجملة 6 هنا",
+            "اكتبي الجملة 7 هنا",
+            "اكتبي الجملة 8 هنا",
+            "اكتبي الجملة 9 هنا",
+            "اكتبي الجملة 10 هنا"
+        ];
+
+        function showMessage() {
+            let random = Math.floor(Math.random() * messages.length);
+            document.getElementById("message").innerText = messages[random];
+        }
+    </script>
+
+</body>
+</html>
