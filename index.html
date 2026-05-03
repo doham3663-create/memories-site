@@ -6,23 +6,27 @@
     <style>
         body {
             text-align: center;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
 
-            /* ✨ الخلفية الجديدة الهادية */
-            background: linear-gradient(135deg, #f7f7f7, #ffffff);
+            /* ✨ خلفية ناعمة ومحسنة */
+            background: linear-gradient(135deg, #fafafa, #ffffff);
 
             background-image:
-                radial-gradient(circle at 20% 20%, rgba(200,200,200,0.2) 0%, transparent 40%),
-                radial-gradient(circle at 80% 30%, rgba(220,220,220,0.2) 0%, transparent 40%),
-                radial-gradient(circle at 40% 80%, rgba(210,210,210,0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 20%, rgba(0,0,0,0.04), transparent 40%),
+                radial-gradient(circle at 80% 30%, rgba(0,0,0,0.03), transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(0,0,0,0.03), transparent 50%);
+
+            color: #333;
         }
 
-        /* ✨ عنوان MEMORIES */
+        /* ✨ Title */
         .title {
-            color: gray;
-            font-size: 40px;
+            font-size: 42px;
+            color: #555;
             margin-top: 30px;
-            animation: fadeDown 1.5s ease-in-out, glow 2s infinite alternate;
+            letter-spacing: 2px;
+
+            animation: fadeDown 1.5s ease, glow 2s infinite alternate;
         }
 
         @keyframes fadeDown {
@@ -68,75 +72,78 @@
         #startScreen button {
             padding: 12px 25px;
             font-size: 18px;
-            background: gray;
+            background: #777;
             color: white;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* Boxes (paper effect) */
-        .box {
-            margin: 20px auto;
-            padding: 20px;
-            width: 80%;
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            position: relative;
-        }
-
-        .box::before {
-            content: "";
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            right: -6px;
-            bottom: -6px;
-            background: #f9f9f9;
-            border-radius: 12px;
-            z-index: -1;
-        }
-
-        textarea {
-            width: 250px;
-            height: 120px;
-            padding: 10px;
-            font-size: 14px;
             border-radius: 10px;
-            border: 1px solid #ccc;
-            resize: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #startScreen button:hover {
+            background: #555;
+            transform: scale(1.05);
+        }
+
+        /* Box design */
+        .box {
+            margin: 25px auto;
+            padding: 25px;
+            width: 75%;
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Inputs */
+        textarea {
+            width: 260px;
+            height: 110px;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            outline: none;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+            padding: 10px 22px;
+            font-size: 15px;
             border: none;
-            background-color: gray;
+            border-radius: 10px;
+            background: #777;
             color: white;
-            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #555;
+            background: #555;
+            transform: scale(1.05);
         }
 
         #message {
             font-size: 18px;
             color: #333;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.8s ease;
         }
 
         /* Slideshow */
         .slideshow {
-            position: relative;
-            width: 300px;
-            height: 300px;
+            width: 320px;
+            height: 320px;
             margin: auto;
+            border-radius: 14px;
             overflow: hidden;
-            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         .slide {
@@ -145,7 +152,7 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1.2s ease;
         }
 
         /* Overlay */
@@ -173,9 +180,10 @@
 
 <!-- 🎵 موسيقى -->
 <iframe
+    id="music"
     width="0"
     height="0"
-    src="https://www.youtube.com/embed/PX2d9J5b8dc?autoplay=1&loop=1&playlist=PX2d9J5b8dc"
+    src="https://www.youtube.com/embed/PX2d9J5b8dc?enablejsapi=1&loop=1&playlist=PX2d9J5b8dc"
     frameborder="0"
     allow="autoplay">
 </iframe>
@@ -212,4 +220,73 @@
         <img class="slide" src="https://via.placeholder.com/300">
         <img class="slide" src="https://via.placeholder.com/300">
         <img class="slide" src="https://via.placeholder.com/300">
-        <img class="slide" src="https
+        <img class="slide" src="https://via.placeholder.com/300">
+        <img class="slide" src="https://via.placeholder.com/300">
+    </div>
+</div>
+
+<!-- تكبير صورة -->
+<div id="overlay" onclick="closeImage()">
+    <img id="bigImg">
+</div>
+
+<script>
+    // Start
+    function startSite() {
+        document.getElementById("startScreen").style.display = "none";
+    }
+
+    // Music fix (تشغيل بعد أول click)
+    window.addEventListener("click", function () {
+        let frame = document.getElementById("music");
+        frame.src = frame.src;
+    });
+
+    // Messages
+    let messages = [
+        "اكتبي الجملة 1 هنا",
+        "اكتبي الجملة 2 هنا",
+        "اكتبي الجملة 3 هنا",
+        "اكتبي الجملة 4 هنا",
+        "اكتبي الجملة 5 هنا",
+        "اكتبي الجملة 6 هنا",
+        "اكتبي الجملة 7 هنا",
+        "اكتبي الجملة 8 هنا",
+        "اكتبي الجملة 9 هنا",
+        "اكتبي الجملة 10 هنا"
+    ];
+
+    function showMessage() {
+        let random = Math.floor(Math.random() * messages.length);
+
+        let msg = document.getElementById("message");
+        msg.style.opacity = 0;
+
+        setTimeout(() => {
+            msg.innerText = messages[random];
+            msg.style.opacity = 1;
+        }, 300);
+    }
+
+    // Slideshow
+    let index = 0;
+    let slides = document.getElementsByClassName("slide");
+
+    function showSlides() {
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.opacity = 0;
+        }
+
+        index++;
+        if (index > slides.length) index = 1;
+
+        slides[index - 1].style.opacity = 1;
+
+        setTimeout(showSlides, 2000);
+    }
+
+    showSlides();
+</script>
+
+</body>
+</html>
