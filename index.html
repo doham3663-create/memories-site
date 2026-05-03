@@ -1,87 +1,157 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>welcome to memories</title>
-    <style>
-        :root {
-            --primary-gold: #FFD700;
-            --primary-pink: #FF69B4;
-            --primary-green: #00FF7F;
-            --bg-gradient: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memories💖</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+    animation: bg 8s infinite alternate;
+}
 
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
-            background-size: 300% 300%;
-            animation: bgMove 10s ease infinite;
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-            touch-action: manipulation;
-        }
+@keyframes bg {
+    0% {filter: hue-rotate(0deg);}
+    100% {filter: hue-rotate(40deg);}
+}
 
-        @keyframes bgMove {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: glow 2s infinite alternate;
+}
 
-        .welcome {
-            text-align: center;
-            padding: 40px 20px;
-        }
+@keyframes glow {
+    from {text-shadow: 0 0 10px white;}
+    to {text-shadow: 0 0 25px pink;}
+}
 
-        .welcome-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--primary-gold), var(--primary-pink), var(--primary-green));
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleGlow 2s ease-in-out infinite alternate;
-            margin-bottom: 15px;
-        }
+.container {
+    max-width: 600px;
+    margin: auto;
+}
 
-        @keyframes titleGlow {
-            0% { 
-                filter: drop-shadow(0 0 10px var(--primary-gold));
-                transform: scale(1);
-            }
-            100% { 
-                filter: drop-shadow(0 0 25px var(--primary-pink));
-                transform: scale(1.05);
-            }
-        }
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+}
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .input-section {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+button:hover {
+    transform: scale(1.05);
+}
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+.memory {
+    background: white;
+    color: black;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    animation: fadeIn 0.5s ease;
+}
 
-        .
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+    animation: zoom 0.5s ease;
+}
+
+@keyframes zoom {
+    from {transform: scale(0.8);}
+    to {transform: scale(1);}
+}
+</style>
+
+</head>
+<body>
+
+<h1>memories💖</h1>
+
+<div class="container">
+
+<textarea id="text" placeholder="اكتبي الذكرى هنا..."></textarea>
+
+<input type="file" id="image" accept="image/*">
+
+<!-- اختيار الأغنية -->
+<input type="file" id="music" accept="audio/*">
+
+<button onclick="addMemory()">احفظ الذكرى</button>
+
+<div id="memories"></div>
+
+<!-- مشغل الصوت -->
+<audio id="player" controls style="width:100%; margin-top:20px;"></audio>
+
+</div>
+
+<script>
+function addMemory() {
+    let text = document.getElementById("text").value;
+    let file = document.getElementById("image").files[0];
+
+    if (!text && !file) {
+        alert("اكتبي حاجة أو صورة!");
+        return;
+    }
+
+    let div = document.createElement("div");
+    div.className = "memory";
+
+    if (text) {
+        let p = document.createElement("p");
+        p.innerText = text;
+        div.appendChild(p);
+    }
+
+    if (file) {
+        let img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        div.appendChild(img);
+    }
+
+    document.getElementById("memories").appendChild(div);
+
+    document.getElementById("text").value = "";
+    document.getElementById("image").value = "";
+}
+
+// تشغيل الأغنية من الموبايل
+document.getElementById("music").addEventListener("change", function(e) {
+    let file = e.target.files[0];
+    if (file) {
+        let url = URL.createObjectURL(file);
+        let player = document.getElementById("player");
+        player.src = url;
+        player.play();
+    }
+});
+</script>
+
+</body>
+</html>
