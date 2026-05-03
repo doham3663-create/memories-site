@@ -11,52 +11,14 @@ body {
     font-family: Arial;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
     color: white;
-}
-
-/* صفحة البداية */
-#splash {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    animation: fadeOut 2s ease 3s forwards;
-    z-index: 999;
-}
-
-#splash h1 {
-    font-size: 40px;
-    animation: zoom 2s ease;
-}
-
-@keyframes zoom {
-    from {transform: scale(0); opacity: 0;}
-    to {transform: scale(1); opacity: 1;}
-}
-
-@keyframes fadeOut {
-    to {opacity: 0; visibility: hidden;}
-}
-
-/* المحتوى */
-#app {
     padding: 20px;
-    opacity: 0;
-    animation: show 1s ease 3.5s forwards;
-}
-
-@keyframes show {
-    to {opacity: 1;}
 }
 
 h1 {
     text-align: center;
 }
 
-/* الإدخال */
+/* الإدخالات */
 input, textarea, button {
     width: 100%;
     padding: 10px;
@@ -70,20 +32,13 @@ button {
     color: white;
 }
 
-/* سلايدر */
+/* السلايدر */
 .slider {
     max-width: 600px;
     margin: 20px auto;
     overflow: hidden;
     border-radius: 15px;
-    position: relative;
     display: none;
-    animation: fade 1s ease;
-}
-
-@keyframes fade {
-    from {opacity: 0;}
-    to {opacity: 1;}
 }
 
 .slides {
@@ -103,70 +58,53 @@ button {
     width: 100%;
     border-radius: 10px;
 }
-
-.btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-}
-
-.prev {left:0;}
-.next {right:0;}
 </style>
 </head>
 
 <body>
 
-<!-- صفحة البداية -->
-<div id="splash">
-    <h1>💖 memories 💖</h1>
-    <p>loading your world...</p>
-</div>
-
-<!-- التطبيق -->
-<div id="app">
-
 <h1>memories 💖</h1>
+
+<!-- ⭐ أول حاجة: بوكس الكتابة -->
+<p>💌 اكتبي الذكرى الأساسية</p>
+<textarea id="mainText" placeholder="اكتبي إحساسك هنا..."></textarea>
 
 <p>📸 اختاري صور (10 على الأقل)</p>
 <input type="file" id="images" multiple accept="image/*">
 
-<p>🎧 اختاري موسيقى</p>
+<p>🎧 موسيقى</p>
 <input type="file" id="music" accept="audio/*">
 
 <button onclick="start()">ابدأ الذكريات</button>
 
-<audio id="player" controls style="width:100%; margin-top:10px;"></audio>
+<audio id="player" controls></audio>
 
 <div class="slider" id="slider">
-    <button class="btn prev" onclick="move(-1)">‹</button>
     <div class="slides" id="slides"></div>
-    <button class="btn next" onclick="move(1)">›</button>
-</div>
-
 </div>
 
 <script>
 
 let data = [];
-let index = 0;
 
 /* الموسيقى */
 document.getElementById("music").addEventListener("change", function(e){
     let file = e.target.files[0];
     if(file){
-        let url = URL.createObjectURL(file);
-        document.getElementById("player").src = url;
+        document.getElementById("player").src = URL.createObjectURL(file);
     }
 });
 
-/* تشغيل */
+/* البداية */
 function start(){
+
+    let mainText = document.getElementById("mainText").value;
     let files = document.getElementById("images").files;
+
+    if(!mainText){
+        alert("اكتبي الذكرى الأول!");
+        return;
+    }
 
     if(files.length < 10){
         alert("لازم 10 صور على الأقل!");
@@ -176,14 +114,12 @@ function start(){
     data = [];
 
     for(let i = 0; i < files.length; i++){
-        let title = prompt("عنوان الصورة " + (i+1));
-        let text = prompt("الذكرى " + (i+1));
-        let quote = prompt("جملة إحساس " + (i+1));
+
+        let quote = prompt("✨ اكتبي جملة تحفيزية للصورة " + (i+1));
 
         data.push({
             img: URL.createObjectURL(files[i]),
-            title: title || "memory",
-            text: text || "",
+            message: mainText,
             quote: quote || ""
         });
     }
@@ -201,28 +137,15 @@ function render(){
         div.className = "slide";
 
         div.innerHTML = `
-            <h3>${item.title}</h3>
             <img src="${item.img}">
-            <p>${item.text}</p>
-            <em>${item.quote}</em>
+            <p>💌 ${item.message}</p>
+            <em>✨ ${item.quote}</em>
         `;
 
         slides.appendChild(div);
     });
 
     document.getElementById("slider").style.display = "block";
-}
-
-/* حركة */
-function move(step){
-    let total = data.length;
-    index += step;
-
-    if(index < 0) index = total - 1;
-    if(index >= total) index = 0;
-
-    document.getElementById("slides").style.transform =
-        `translateX(${index * -100}%)`;
 }
 
 </script>
