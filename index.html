@@ -38,21 +38,51 @@
         button:hover {
             background-color: #555;
         }
+
+        textarea {
+            width: 90%;
+            height: 120px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+
+        #messageBox {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fafafa;
+            min-height: 50px;
+        }
+
+        #message {
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 
 </head>
 
 <body>
 
+    <!-- العنوان -->
     <h1>MEMORIES 🩶</h1>
 
+    <!-- بوكس الرسالة -->
     <div class="box">
-        <p>هنا هتكتبي المسدج بعدين 💌</p>
+        <textarea placeholder="اكتبي مسدج هنا 💌"></textarea>
     </div>
 
+    <!-- زرار الجمل -->
     <div class="box">
         <button onclick="showMessage()">Click here</button>
-        <p id="message"></p>
+
+        <div id="messageBox">
+            <p id="message"></p>
+        </div>
     </div>
 
     <script>
