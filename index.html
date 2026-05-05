@@ -3,151 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>memories 💖</title>
+<title>Memories</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    color: white;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-/* الإدخالات */
-input, textarea, button {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: none;
-}
-
-button {
-    background: black;
-    color: white;
-}
-
-/* السلايدر */
-.slider {
-    max-width: 600px;
-    margin: 20px auto;
+    font-family: 'Cairo', sans-serif;
     overflow: hidden;
-    border-radius: 15px;
-    display: none;
+    color: #5a3e2b;
 }
 
-.slides {
-    display: flex;
-    transition: 0.5s ease;
-}
-
-.slide {
-    min-width: 100%;
-    background: white;
-    color: black;
-    text-align: center;
-    padding: 10px;
-}
-
-.slide img {
+/* فيديو الخلفية */
+#bgVideo {
+    position: fixed;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* طبقة لون */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(245, 230, 211, 0.7);
+    z-index: -1;
+}
+
+/* رفع الملفات */
+.controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+}
+
+/* الصور */
+.slide {
+    position: absolute;
+    width: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    border-radius: 20px;
+    transition: 2s;
+}
+
+/* الصورة النشطة */
+.slide.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* بوكس الكتابة */
+#mainText {
+    width: 250px;
+    height: 80px;
+    border-radius: 15px;
+    border: none;
+    padding: 10px;
+    background: #fff8f0;
+    color: #5a3e2b;
+    margin-top: 5px;
+}
+
+/* زرار */
+button {
+    background: #8b5e3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
     border-radius: 10px;
+    cursor: pointer;
+}
+
+/* عرض النص */
+#mainDisplay {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1.5s;
+}
+
+#mainDisplay.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 </head>
 
 <body>
 
-<h1>memories 💖</h1>
+<video id="bgVideo" autoplay muted loop></video>
+<div class="overlay"></div>
 
-<!-- ⭐ أول حاجة: بوكس الكتابة -->
-<p>💌 اكتبي الذكرى الأساسية</p>
-<textarea id="mainText" placeholder="اكتبي إحساسك هنا..."></textarea>
+<div class="controls">
+    <input type="file" accept="video/*" onchange="loadVideo(event)"><br>
+    <input type="file" accept="audio/*" onchange="loadAudio(event)"><br>
+    <input type="file" accept="image/*" multiple onchange="loadImages(event)"><br><br>
 
-<p>📸 اختاري صور (10 على الأقل)</p>
-<input type="file" id="images" multiple accept="image/*">
-
-<p>🎧 موسيقى</p>
-<input type="file" id="music" accept="audio/*">
-
-<button onclick="start()">ابدأ الذكريات</button>
-
-<audio id="player" controls></audio>
-
-<div class="slider" id="slider">
-    <div class="slides" id="slides"></div>
+    <textarea id="mainText" placeholder="اكتبي ذكريتك هنا..."></textarea><br>
+    <button onclick="showMainText()">عرض الذكرى</button>
 </div>
 
+<div id="mainDisplay"></div>
+
+<audio id="audio" loop></audio>
+
 <script>
+let slides = [];
+let index = 0;
 
-let data = [];
-
-/* الموسيقى */
-document.getElementById("music").addEventListener("change", function(e){
-    let file = e.target.files[0];
-    if(file){
-        document.getElementById("player").src = URL.createObjectURL(file);
-    }
-});
-
-/* البداية */
-function start(){
-
-    let mainText = document.getElementById("mainText").value;
-    let files = document.getElementById("images").files;
-
-    if(!mainText){
-        alert("اكتبي الذكرى الأول!");
-        return;
-    }
-
-    if(files.length < 10){
-        alert("لازم 10 صور على الأقل!");
-        return;
-    }
-
-    data = [];
-
-    for(let i = 0; i < files.length; i++){
-
-        let quote = prompt("✨ اكتبي جملة تحفيزية للصورة " + (i+1));
-
-        data.push({
-            img: URL.createObjectURL(files[i]),
-            message: mainText,
-            quote: quote || ""
-        });
-    }
-
-    render();
+// فيديو
+function loadVideo(e){
+    bgVideo.src = URL.createObjectURL(e.target.files[0]);
 }
 
-/* عرض */
-function render(){
-    let slides = document.getElementById("slides");
-    slides.innerHTML = "";
+// صوت
+function loadAudio(e){
+    audio.src = URL.createObjectURL(e.target.files[0]);
+    audio.play();
+}
 
-    data.forEach(item => {
-        let div = document.createElement("div");
-        div.className = "slide";
+// صور
+function loadImages(e){
+    slides.forEach(s => s.remove());
+    slides = [];
 
-        div.innerHTML = `
-            <img src="${item.img}">
-            <p>💌 ${item.message}</p>
-            <em>✨ ${item.quote}</em>
-        `;
-
-        slides.appendChild(div);
+    Array.from(e.target.files).forEach(file => {
+        let img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.className = "slide";
+        document.body.appendChild(img);
+        slides.push(img);
     });
 
-    document.getElementById("slider").style.display = "block";
+    startShow();
 }
 
+// عرض الصور
+function startShow(){
+    if(slides.length === 0) return;
+
+    setInterval(() => {
+        slides.forEach(s => s.classList.remove("active"));
+
+        slides[index].classList.add("active");
+
+        index++;
+        if(index >= slides.length) index = 0;
+
+    }, 3000);
+}
+
+// عرض الذكرى
+function showMainText() {
+    let text = document.getElementById("mainText").value;
+    let display = document.getElementById("mainDisplay");
+
+    display.innerText = text;
+    display.classList.add("show");
+}
 </script>
 
 </body>
